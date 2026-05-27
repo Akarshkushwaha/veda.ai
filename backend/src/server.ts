@@ -23,8 +23,35 @@ export const io = new Server(server, {
 app.use(cors());
 app.use(express.json());
 
+import multer from 'multer';
+import pdfParse from 'pdf-parse';
+
 // Routes
 app.use('/api/assignments', assignmentRoutes);
+
+// File Upload Route
+const upload = multer({ storage: multer.memoryStorage() });
+app.post('/api/upload', upload.single('file'), async (req, res) => {
+  try {
+    if (!req.file) {
+      res.status(400).json({ error: 'No file uploaded' });
+      return;
+    }
+    
+    let text = '';
+    if (req.file.mimetype === 'application/pdf') {
+      const data = await pdfParse(req.file.buffer);
+      text = data.text;
+    } else {
+      text = req.file.buffer.toString('utf8');
+    }
+
+    res.json({ text });
+  } catch (err) {
+    console.error('File parse error:', err);
+    res.status(500).json({ error: 'Failed to process file' });
+  }
+});
 
 // Socket.io connection handler
 io.on('connection', (socket) => {

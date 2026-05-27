@@ -33,6 +33,37 @@ export default function CreateAssignment() {
     getTotalMarks,
   } = useAssignmentStore();
 
+  const [uploading, setUploading] = React.useState(false);
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      const res = await fetch('http://localhost:5000/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setInstructions(instructions ? `${instructions}\n\n[Extracted from ${file.name}]:\n${data.text}` : `[Extracted from ${file.name}]:\n${data.text}`);
+        alert('File content extracted and added to Additional Information!');
+      } else {
+        alert(data.error || 'Failed to upload file');
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Error uploading file. Make sure backend is running.');
+    } finally {
+      setUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    }
+  };
+
   const handleSubmit = async () => {
     if (questionTypeRows.length === 0) {
       alert('Please add at least one question type.');
@@ -91,18 +122,20 @@ export default function CreateAssignment() {
         <p className={styles.sectionSubtitle}>Basic information about your assignment</p>
 
         {/* Upload Zone */}
-        <div className={styles.uploadZone} onClick={() => fileInputRef.current?.click()}>
-          <input type="file" ref={fileInputRef} hidden accept="image/jpeg,image/png" />
+        <div className={styles.uploadZone} onClick={() => !uploading && fileInputRef.current?.click()}>
+          <input type="file" ref={fileInputRef} hidden accept=".pdf,.txt,text/plain,application/pdf" onChange={handleFileUpload} />
           <div className={styles.uploadIcon}>
             <Upload size={28} />
           </div>
-          <p className={styles.uploadText}>Choose a file or drag &amp; drop it here</p>
-          <p className={styles.uploadHint}>JPEG, PNG, upto 10MB</p>
-          <button className={styles.browseBtn} type="button" onClick={(e) => { e.stopPropagation(); fileInputRef.current?.click(); }}>
-            Browse Files
+          <p className={styles.uploadText}>
+            {uploading ? 'Extracting text...' : 'Choose a file or drag & drop it here'}
+          </p>
+          <p className={styles.uploadHint}>PDF, TXT up to 10MB</p>
+          <button className={styles.browseBtn} type="button" onClick={(e) => { e.stopPropagation(); fileInputRef.current?.click(); }} disabled={uploading}>
+            {uploading ? 'Extracting...' : 'Browse Files'}
           </button>
         </div>
-        <p className={styles.uploadCaption}>Upload images of your preferred document/image</p>
+        <p className={styles.uploadCaption}>Upload your preferred document (PDF or Text) for reference</p>
 
         {/* Due Date */}
         <label className={styles.fieldLabel}>Due Date</label>
