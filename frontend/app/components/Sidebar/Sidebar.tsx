@@ -46,6 +46,16 @@ export default function Sidebar() {
         </div>
       </Link>
 
+      {/* Create Button */}
+      <Link href="/create" style={{ textDecoration: 'none' }}>
+        <button className={styles.createBtn}>
+          <span className={styles.createBtnIcon}>
+            <Sparkles size={16} />
+          </span>
+          Create Assignment
+        </button>
+      </Link>
+
       {/* Navigation */}
       <nav className={styles.nav}>
         {navItems.map((item) => {
