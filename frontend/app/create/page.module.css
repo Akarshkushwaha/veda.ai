@@ -428,3 +428,30 @@
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+@media (max-width: 768px) {
+  .qtHeader {
+    display: none;
+  }
+  .qtRow {
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 12px;
+  }
+  .qtSelectWrapper {
+    flex: 1 1 100%;
+  }
+  .stepper {
+    flex: 1;
+  }
+  .totals {
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+  }
+  .bottomBar {
+    padding: 16px;
+    left: 0;
+    width: 100%;
+  }
+}

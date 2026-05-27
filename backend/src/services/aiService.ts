@@ -40,7 +40,7 @@ Ensure the sum of all question marks equals exactly ${assignment.totalMarks}, an
   try {
     const chatCompletion = await groq.chat.completions.create({
       messages: [{ role: 'user', content: prompt }],
-      model: 'llama3-70b-8192',
+      model: 'llama-3.3-70b-versatile',
       temperature: 0.7,
       response_format: { type: "json_object" }
     });

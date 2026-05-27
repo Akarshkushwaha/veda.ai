@@ -208,3 +208,18 @@
     padding: 20px;
   }
 }
+
+@media (max-width: 768px) {
+  .banner {
+    flex-direction: column;
+    text-align: center;
+  }
+  .paper {
+    padding: 24px 16px;
+  }
+  .metaRow {
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+  }
+}
