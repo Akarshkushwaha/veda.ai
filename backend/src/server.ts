@@ -24,7 +24,7 @@ app.use(cors());
 app.use(express.json());
 
 import multer from 'multer';
-import pdfParse from 'pdf-parse';
+const pdfParse = require('pdf-parse');
 
 // Routes
 app.use('/api/assignments', assignmentRoutes);
