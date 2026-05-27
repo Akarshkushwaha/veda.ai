@@ -1,63 +1,72 @@
 # VedaAI - AI Assessment Creator
 
-VedaAI is a full-stack web application designed to help teachers create structured, high-quality question papers effortlessly using Artificial Intelligence. 
+Hi! This is my submission for the VedaAI Full Stack Engineering Assignment. 
 
-## 🏗️ Architecture Overview
+I've built a full-stack web application that allows teachers to easily create question papers using AI. I focused heavily on making sure the UI perfectly matches the Figma designs provided, and I built a robust backend to handle the AI generation without freezing the frontend.
 
-The system is designed with a modern, scalable, and non-blocking architecture to handle potentially slow AI generation tasks without freezing the user interface.
+## 🛠️ Tech Stack
 
-- **Frontend**: Next.js (React) + TypeScript + Zustand + CSS Modules.
-- **Backend**: Node.js + Express (TypeScript).
-- **Database**: MongoDB (Stores generated assignments).
-- **Queue System**: BullMQ + Redis (Handles background job processing for AI generation).
-- **Real-time Communication**: WebSocket (Socket.io) to push live status updates to the client.
-- **AI Integration**: Groq API (Llama 3.3 70B) for lightning-fast and highly capable prompt processing.
+**Frontend:**
+- Next.js (React) with TypeScript
+- Zustand for state management
+- Pure CSS Modules for styling (to match the Figma precisely)
+- Socket.io-client for real-time loading updates
 
-## 🚀 The Approach
+**Backend:**
+- Node.js & Express (TypeScript)
+- MongoDB for storing the generated assignments
+- BullMQ & Redis for handling background jobs
+- Socket.io for sending progress updates to the frontend
+- Groq API (Llama 3.3 70B) for super-fast AI generation
 
-### 1. Job Queuing for Reliability
-Generating complex JSON from an LLM can sometimes take 10-20 seconds. If we used a standard HTTP request/response model, the browser connection might timeout, or the user might refresh and lose their generation. 
-By utilizing **BullMQ** and **Redis**, the backend immediately returns a `jobId` and hands the heavy lifting to a background worker. 
+## 🚀 How I Built It (My Approach)
 
-### 2. Real-time WebSocket Updates
-While the BullMQ worker is generating the assignment, it emits progress updates (e.g., "Initializing", "Generating AI content", "Finalizing"). These are streamed directly to the Next.js frontend via **Socket.io**, providing a dynamic loading screen experience.
+### 1. Handling Long AI Generations
+Sometimes asking an LLM to generate a complex JSON structure takes a while. If I just used a normal HTTP request, the browser might timeout while waiting. 
+To fix this, I used **BullMQ** and **Redis**. When you click "Next", the backend just adds the job to a queue and immediately says "Okay, I'm working on it!". A background worker then takes over to do the actual AI generation.
 
-### 3. Prompt Engineering
-The system ensures the LLM does not return conversational text (like "Here is your assignment:"). We use strict prompt structuring and JSON-mode features to force the model to return a deeply nested, perfectly typed JSON object containing Sections, Questions, Difficulty markers, and Marks.
+### 2. Real-time Loading Screen
+While the background worker is generating the assignment, it needs to tell the frontend what's going on. I used **WebSockets (Socket.io)** for this. The backend streams live status updates (like "Initializing AI...", "Generating Questions...") directly to the Next.js frontend, making the loading screen feel dynamic and responsive.
 
-### 4. Figma-Accurate UI & Print Formatting
-The frontend precisely mirrors the provided Figma designs. Additionally, specialized `@media print` CSS rules were added. When a teacher hits "Download PDF", the native browser print engine strips away the sidebars, navigation, and banners, rendering a clean, perfectly formatted exam paper.
+### 3. Prompt Engineering & JSON Mode
+I wrote strict prompts so the AI doesn't reply with conversational text (like "Here are your questions!"). Instead, it outputs a perfectly formatted, deeply nested JSON object. The frontend then parses this JSON and renders the questions cleanly.
 
-## 💻 Setup Instructions
+### 4. Perfect PDF Export
+One of the bonus requirements was letting users download the assignment as a PDF. Instead of using a clunky HTML-to-PDF library, I used native `@media print` CSS rules. When you hit "Download PDF" and the print dialog opens, it automatically hides the sidebar, the top header, and resets the margins. The result is a clean, perfectly formatted exam paper!
 
-To run this project locally, you will need **Node.js**, a **MongoDB** connection URL, and a **Redis** connection URL.
+### 5. File Upload
+I also added a file upload feature. If you upload a PDF or Text file on the creation screen, the backend extracts the text using `pdf-parse` and `multer` and feeds it directly into the AI prompt as extra context!
 
-### 1. Clone the repository
+## 💻 How to Run It Locally
+
+You'll need Node.js, a MongoDB connection URL, and a Redis connection URL to run this.
+
+### 1. Clone the project
 ```bash
 git clone https://github.com/Akarshkushwaha/veda.ai.git
 cd veda.ai
 ```
 
-### 2. Setup the Backend
-Open a terminal in the `backend` directory:
+### 2. Start the Backend
+Open a terminal in the `backend` folder:
 ```bash
 cd backend
 npm install
 ```
-Create a `.env` file in the `backend/` folder and add your keys:
+Create a `.env` file in the `backend/` folder and add your environment variables:
 ```env
 PORT=5000
 MONGO_URI=your_mongodb_connection_string
 REDIS_URL=your_redis_connection_string
 GROQ_API_KEY=your_groq_api_key
 ```
-Start the backend development server:
+Start the backend server:
 ```bash
 npm run dev
 ```
 
-### 3. Setup the Frontend
-Open a new terminal in the `frontend` directory:
+### 3. Start the Frontend
+Open a new terminal in the `frontend` folder:
 ```bash
 cd frontend
 npm install
@@ -66,10 +75,12 @@ Create a `.env.local` file in the `frontend/` folder:
 ```env
 NEXT_PUBLIC_API_URL=http://localhost:5000
 ```
-Start the frontend development server:
+Start the frontend server:
 ```bash
 npm run dev
 ```
 
-### 4. Ready!
-Open [http://localhost:3000](http://localhost:3000) in your browser to start creating AI assignments!
+### 4. You're all set!
+Open [http://localhost:3000](http://localhost:3000) in your browser. 
+
+Thanks for reviewing my assignment!
