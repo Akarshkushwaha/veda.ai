@@ -20,7 +20,7 @@ const navItems = [
   { label: 'My Groups', icon: Users, href: '/groups' },
   { label: 'Assignments', icon: FileText, href: '/' },
   { label: "AI Teacher's Toolkit", icon: Monitor, href: '/toolkit' },
-  { label: 'My Library', icon: PieChart, href: '/library', badge: '32' },
+  { label: 'My Library', icon: PieChart, href: '/library' },
 ];
 
 export default function Sidebar() {
@@ -50,15 +50,6 @@ export default function Sidebar() {
       <nav className={styles.nav}>
         {navItems.map((item) => {
           const Icon = item.icon;
-          let badge = item.badge;
-          if (item.label === 'Assignments') {
-            if (pathname === '/') badge = '10';
-            else if (pathname.startsWith('/assessment')) badge = '32';
-          }
-          if (item.label === 'My Library') {
-            if (pathname === '/') badge = undefined; // No badge on home page
-            else badge = '32';
-          }
 
           return (
             <Link key={item.label} href={item.href}>
@@ -67,9 +58,6 @@ export default function Sidebar() {
                   <Icon size={18} />
                 </span>
                 {item.label}
-                {badge && (
-                  <span className={styles.navBadge}>{badge}</span>
-                )}
               </div>
             </Link>
           );
