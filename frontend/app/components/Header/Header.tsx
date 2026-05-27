@@ -34,7 +34,7 @@ export default function Header({ title = 'Assignment' }: HeaderProps) {
         </button>
         <div className={styles.profile}>
           <div className={styles.profileAvatar}>
-            <Image src="/avatar.png" alt="Profile" width={32} height={32} style={{ objectFit: 'cover' }} />
+            <Image src="/avatar.svg" alt="Profile" width={32} height={32} style={{ objectFit: 'cover' }} />
           </div>
           <span className={styles.profileName}>John Doe</span>
           <span className={styles.chevron}>

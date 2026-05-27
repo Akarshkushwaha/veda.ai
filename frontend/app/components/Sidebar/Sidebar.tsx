@@ -39,21 +39,11 @@ export default function Sidebar() {
   return (
     <aside className={styles.sidebar}>
       {/* Logo */}
-      <div className={styles.logo}>
-        <div className={styles.logoIcon}>
-          <Image src="/logo.png" alt="VedaAI Logo" width={36} height={36} />
+      <Link href="/" style={{ textDecoration: 'none' }}>
+        <div className={styles.logo}>
+          <Image src="/logo.png" alt="VedaAI Logo" width={36} height={36} className={styles.logoIcon} />
+          <span className={styles.logoText}>VedaAI</span>
         </div>
-        <span className={styles.logoText}>VedaAI</span>
-      </div>
-
-      {/* Create/Toolkit Button */}
-      <Link href={pathname.startsWith('/assessment') ? '/toolkit' : '/create'}>
-        <button className={styles.createBtn}>
-          <span className={styles.createBtnIcon}>
-            <Sparkles size={16} />
-          </span>
-          {pathname.startsWith('/assessment') ? "AI Teacher's Toolkit" : 'Create Assignment'}
-        </button>
       </Link>
 
       {/* Navigation */}
@@ -97,7 +87,7 @@ export default function Sidebar() {
 
         <div className={styles.profileCard}>
           <div className={styles.profileAvatar}>
-            <Image src="/avatar.png" alt="Profile" width={40} height={40} style={{ objectFit: 'cover' }} />
+            <Image src="/avatar.svg" alt="Profile" width={40} height={40} style={{ objectFit: 'cover' }} />
           </div>
           <div className={styles.profileInfo}>
             <span className={styles.profileName}>Delhi Public School</span>

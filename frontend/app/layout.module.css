@@ -24,3 +24,12 @@
     padding: 0 16px 16px;
   }
 }
+
+@media print {
+  .mainArea {
+    margin-left: 0 !important;
+  }
+  .content {
+    padding: 0 !important;
+  }
+}

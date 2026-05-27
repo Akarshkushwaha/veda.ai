@@ -115,3 +115,9 @@
   align-items: center;
   color: var(--text-muted);
 }
+
+@media print {
+  .header {
+    display: none !important;
+  }
+}
