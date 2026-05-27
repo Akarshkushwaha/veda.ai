@@ -5,7 +5,7 @@ import QuestionPaper from '../models/QuestionPaper';
 import { generateQuestionPaper } from '../services/aiService';
 import { io } from '../server';
 
-const connection = new IORedis(process.env.REDIS_URI || 'redis://localhost:6379', {
+const connection = new IORedis(process.env.REDIS_URL || process.env.REDIS_URI || 'redis://localhost:6379', {
   maxRetriesPerRequest: null,
 });
 

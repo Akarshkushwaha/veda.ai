@@ -27,6 +27,9 @@ import multer from 'multer';
 const pdfParse = require('pdf-parse');
 
 // Routes
+app.get('/', (req, res) => {
+  res.send('VedaAI API is running successfully!');
+});
 app.use('/api/assignments', assignmentRoutes);
 
 // File Upload Route
