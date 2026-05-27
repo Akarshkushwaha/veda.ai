@@ -69,7 +69,7 @@ mongoose
   .connect(MONGO_URI)
   .then(() => {
     console.log('Connected to MongoDB');
-    server.listen(PORT, () => {
+    server.listen(PORT as number, '0.0.0.0', () => {
       console.log(`Server running on port ${PORT}`);
       // Start the background worker for AI generation
       startWorker();
