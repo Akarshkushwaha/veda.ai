@@ -25,7 +25,8 @@ export default function Home() {
   useEffect(() => {
     const fetchAssignments = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/assignments');
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+        const res = await fetch(`${apiUrl}/api/assignments`);
         if (res.ok) {
           const data = await res.json();
           setAssignments(Array.isArray(data) ? data : []);
@@ -41,7 +42,8 @@ export default function Home() {
 
   const handleDelete = async (id: string) => {
     try {
-      await fetch(`http://localhost:5000/api/assignments/${id}`, { method: 'DELETE' });
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+      await fetch(`${apiUrl}/api/assignments/${id}`, { method: 'DELETE' });
       setAssignments((prev) => prev.filter((a) => a._id !== id));
     } catch {
       // ignore

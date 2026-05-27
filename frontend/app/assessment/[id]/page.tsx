@@ -38,7 +38,8 @@ export default function AssessmentView() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/api/assignments/${params.id}`);
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+        const res = await fetch(`${apiUrl}/api/assignments/${params.id}`);
         const result = await res.json();
         if (res.ok) {
           setData(result);

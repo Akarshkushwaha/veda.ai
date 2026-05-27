@@ -44,7 +44,8 @@ export default function CreateAssignment() {
     formData.append('file', file);
 
     try {
-      const res = await fetch('http://localhost:5000/api/upload', {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+      const res = await fetch(`${apiUrl}/api/upload`, {
         method: 'POST',
         body: formData,
       });
@@ -73,7 +74,8 @@ export default function CreateAssignment() {
     setSubmitting(true);
 
     try {
-      const res = await fetch('http://localhost:5000/api/assignments', {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+      const res = await fetch(`${apiUrl}/api/assignments`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
